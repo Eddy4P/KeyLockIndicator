@@ -251,7 +251,18 @@ HRESULT OsdRenderer::Render(ID2D1DeviceContext* ctx, const OsdContent& content,
     // DIP kalır; dönüşüm kaldırıldığında OsdMetrics ölçüleri aynen geri gelir.
     const D2D1::Matrix3x2F world = WorldTransform(originDip);
     ctx->SetTransform(world);
+// State-based OSD card colours.
+if (!m_highContrast) {
+    const auto cardColor = content.on
+        ? Rgba(0x16A34A, m_cardAlpha)  // Green: ON
+        : Rgba(0xDC2626, m_cardAlpha); // Red: OFF
 
+    m_cardBrush->SetColor(cardColor);
+    m_borderBrush->SetColor(Rgba(0xFFFFFF, 0.20f));
+    m_iconBrush->SetColor(Rgba(0xFFFFFF, 1.00f));
+    m_titleBrush->SetColor(Rgba(0xFFFFFF, 0.98f));
+    m_statusBrush->SetColor(Rgba(0xFFFFFF, 0.85f));
+}
     ctx->FillRoundedRectangle(CardRoundedRect(m, 0.0f, 0.0f), m_cardBrush.Get());
     // Kenarlık kartın İÇ kenarında: kalınlığın yarısı kadar inset, aksi hâlde
     // kontur kart sınırına taşar ve kenar yumuşak görünür. Yüksek kontrastta
@@ -357,9 +368,9 @@ HRESULT OsdRenderer::DrawIcon(ID2D1DeviceContext* ctx, const OsdContent& content
     // Erişilebilirlik: geometri de değişir (spec §3.5); renk tek ayırt edici
     // değildir, ama açık/kapalı kontrastı da korunur. Düzen rozeti bir durum
     // taşımadığı için daima vurgulu ("açık") renkle çizilir.
-    m_iconBrush->SetColor((content.on || content.keyboardLayout) ? m_palette.iconOn
-                                                                 : m_palette.iconOff);
-
+    m_iconBrush->SetColor(m_highContrast
+    ? ((content.on || content.keyboardLayout) ? m_palette.iconOn : m_palette.iconOff)
+    : Rgba(0xFFFFFF, 1.00f));
     // Geometriler 72 birimlik kutuda tanımlıdır; hedef kutu kipe göre 32–72 DIP
     // arasında değişir, bu yüzden yerel dönüşüm öteleme + kutu oranıdır. Dünya
     // dönüşümünün ÖNÜNE eklenir, böylece kartla aynı çarpanla ölçeklenir.
