@@ -68,16 +68,16 @@ OsdPalette MakePalette(AppTheme theme, float cardAlpha, bool highContrast) noexc
     if (theme == AppTheme::Dark) {
         p.cardFill = Rgba(0x1F1F1F, alpha);   // varsayılan alfa 0.82
         p.border   = Rgba(0xFFFFFF, 0.09f);
-        p.iconOn   = Rgba(0xFFFFFF, 1.00f);
-        p.iconOff  = Rgba(0xFFFFFF, 0.38f);
+        p.iconOn   = Rgba(0x22C55E, 1.00f);  // Green — ON
+        p.iconOff  = Rgba(0xEF4444, 1.00f);  // Red — OFF
         p.title    = Rgba(0xFFFFFF, 0.95f);
         p.status   = Rgba(0xFFFFFF, 0.58f);
         p.shadow   = Rgba(0x000000, 0.28f);   // spec §3.4: koyu temada daha güçlü
     } else {
         p.cardFill = Rgba(0xF7F7F7, alpha);   // varsayılan alfa 0.85
         p.border   = Rgba(0x000000, 0.08f);
-        p.iconOn   = Rgba(0x1A1A1A, 1.00f);
-        p.iconOff  = Rgba(0x1A1A1A, 0.32f);
+        p.iconOn   = Rgba(0x22C55E, 1.00f);  // Green — ON
+        p.iconOff  = Rgba(0xEF4444, 1.00f);  // Red — OFF
         p.title    = Rgba(0x000000, 0.90f);
         p.status   = Rgba(0x000000, 0.55f);
         p.shadow   = Rgba(0x000000, 0.18f);
